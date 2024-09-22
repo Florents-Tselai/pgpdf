@@ -30,9 +30,9 @@ jobs:
 
       - run: make
 
-      - run: |
-          export PG_CONFIG=`which pg_config`
-          sudo --preserve-env=PG_CONFIG make install
+#      - run: |
+#          export PG_CONFIG=`which pg_config`
+#          sudo --preserve-env=PG_CONFIG make install
 #      - run: make installcheck
 #      - if: ${{ failure() }}
 #        run: cat regression.diffs
