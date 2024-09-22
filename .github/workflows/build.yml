@@ -18,13 +18,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - run: |
+          sudo apt update
+          sudo apt install libglib2.0-dev libpoppler-glib-dev
+
       - uses: ankane/setup-postgres@v1
         with:
           postgres-version: ${{ matrix.postgres }}
           dev-files: true
-      - run: |
-          sudo apt update
-          sudo apt install libglib2.0-dev libpoppler-glib-dev
 
       - run: make
 

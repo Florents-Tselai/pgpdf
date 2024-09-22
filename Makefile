@@ -32,8 +32,8 @@ PG_LDFLAGS := \
     -L$(HOMEBREW_PREFIX)/glib/$(GLIB_VER)/lib \
     -L$(HOMEBREW_PREFIX)/poppler/$(POPPLER_VER)/lib
 else
-    PG_CPPFLAGS :=
-    PG_LDFLAGS :=
+PG_CPPFLAGS := (shell pkg-config --cflags glib-2.0 poppler-glib cairo)
+PG_LDFLAGS := $(shell pkg-config --libs glib-2.0 poppler-glib cairo)
 endif
 
 SHLIB_LINK=-lglib-2.0 -lpoppler -lgobject-2.0 -lpoppler-glib
