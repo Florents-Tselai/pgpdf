@@ -24,7 +24,7 @@ jobs:
           dev-files: true
       - run: |
           sudo apt update
-          sudo apt install libglib2.0-dev libpoppler-glib-dev libgobject-2.0-dev
+          sudo apt install libglib2.0-dev libpoppler-glib-dev
 
       - run: make
 
