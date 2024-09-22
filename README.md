@@ -1,4 +1,4 @@
-# pgpdf: Read PDFs from Postgres
+# pgPDF: Read PDFs from Postgres
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
 
