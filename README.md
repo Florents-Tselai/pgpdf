@@ -1,10 +1,6 @@
-# pgpdf: Read PDFs from Postgres
+# pgPDF: Read PDFs from Postgres
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
-
-Have you ever wanted to apply a function to a `jsonb` object, both dynamically and recursively?
-
-No? Well, here's a Postgres extension that allows you to do just that:
 
 ## Usage
 

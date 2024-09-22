@@ -1,1 +1,0 @@
-select pdf_read_file('/Users/flo/pgpdf/pgintro.pdf');

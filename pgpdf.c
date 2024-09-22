@@ -29,12 +29,9 @@ Datum pdf_read_file(PG_FUNCTION_ARGS) {
     char *pdf_file = text_to_cstring(PG_GETARG_TEXT_PP(0));
     GError *error = NULL;
     PopplerDocument *document;
+    gchar *page_text;
     int num_pages; /* Get the number of pages in the PDF */
     StringInfo strinfo = makeStringInfo();
-
-
-    /* Initialize GType system */
-    g_type_init();
 
     /* Open the PDF document */
     document = poppler_document_new_from_file(g_strdup_printf("file://%s", pdf_file), NULL, &error);
@@ -52,10 +49,10 @@ Datum pdf_read_file(PG_FUNCTION_ARGS) {
             continue;
         }
 
-        gchar *text = poppler_page_get_text(page);
-        if (text) {
-            appendStringInfo(strinfo, text);
-            g_free(text);
+        page_text = poppler_page_get_text(page);
+        if (page_text) {
+            appendStringInfo(strinfo, "%s", page_text);
+            g_free(page_text);
         } else {
             elog(WARNING, "Failed to extract text from page %d\n", i);
         }
