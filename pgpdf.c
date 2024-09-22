@@ -33,10 +33,6 @@ Datum pdf_read_file(PG_FUNCTION_ARGS) {
     int num_pages; /* Get the number of pages in the PDF */
     StringInfo strinfo = makeStringInfo();
 
-
-    /* Initialize GType system */
-    g_type_init();
-
     /* Open the PDF document */
     document = poppler_document_new_from_file(g_strdup_printf("file://%s", pdf_file), NULL, &error);
     if (!document)
