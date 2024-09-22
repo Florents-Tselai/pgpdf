@@ -1,0 +1,17 @@
+.deps/
+.idea/
+*.o
+*.so
+build/
+dist/
+*.egg-info/
+archive/
+
+/*.png
+/results/
+/pgdata/
+/docs/
+/.readthedocs.yaml
+/pgpdf.dylib
+/regression.diffs
+/regression.out
