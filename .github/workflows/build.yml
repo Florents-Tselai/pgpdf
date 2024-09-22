@@ -27,8 +27,7 @@ jobs:
           sudo apt install libglib2.0-dev libpoppler-glib-dev libgobject-2.0-dev
 
       - run: make
-        env:
-      #          PG_CFLAGS: -Wall -Wextra -Werror -Wno-unused-parameter -Wno-sign-compare
+
       - run: |
           export PG_CONFIG=`which pg_config`
           sudo --preserve-env=PG_CONFIG make install
