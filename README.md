@@ -37,6 +37,30 @@ select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf'));
   PostgreSQL Origin                                                             +
 ```
 
+You can now do whatever you want,
+for example full-text search is easy:
+
+```tsql
+select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('postgres');
+
+```tsql
+ ?column? 
+----------
+ t
+(1 row)
+```
+
+```tsql
+select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('oracle');
+```
+
+```tsql
+ ?column? 
+----------
+ f
+(1 row)
+```
+
 ## Installation
 
 **Prerequisites**
