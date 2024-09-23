@@ -4,8 +4,37 @@
 
 ## Usage
 
+```sh
+wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
+```
+
+You can use an absolute path to file as a `text` argument
+
 ```tsql
-select pdf_read_file('/abs/path/to/test/pgintro.pdf');
+select pdf_read_file('/tmp/pgintro.pdf');
+```
+```tsql
+                                  pdf_read_file                                   
+----------------------------------------------------------------------------------
+ PostgreSQL Introduction                                                         +
+ Digoal.Zhou                                                                     +
+ 7/20/2011Catalog                                                                +
+  PostgreSQL Origin                                                             +
+```
+
+If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column:
+
+```tsql
+select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf'));
+```
+```tsql
+
+                                  pdf_read_bytes                                  
+----------------------------------------------------------------------------------
+ PostgreSQL Introduction                                                         +
+ Digoal.Zhou                                                                     +
+ 7/20/2011Catalog                                                                +
+  PostgreSQL Origin                                                             +
 ```
 
 ## Installation
