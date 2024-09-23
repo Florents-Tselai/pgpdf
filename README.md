@@ -42,6 +42,7 @@ for example full-text search is easy:
 
 ```tsql
 select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('postgres');
+```
 
 ```tsql
  ?column? 
