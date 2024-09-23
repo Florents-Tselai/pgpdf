@@ -283,3 +283,288 @@ select pdf_read_file('/tmp/pgintro.pdf');
  http://blog.163.com/digoal@126
 (1 row)
 
+select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf'));
+                                  pdf_read_bytes                                  
+----------------------------------------------------------------------------------
+ PostgreSQL Introduction                                                         +
+ Digoal.Zhou                                                                     +
+ 7/20/2011Catalog                                                                +
+  PostgreSQL Origin                                                             +
+  Layout                                                                        +
+  Features                                                                      +
+  Enterprise Class Attribute                                                    +
+  CaseOrigin                                                                    +
+ Extract From Wiki                                                               +
+ 1973                                                                            +
+ Postgres95                                                                      +
+ 1995                                                                            +
+ POSTGRES 1985                                                                   +
+ 1996                                                                            +
+ OLTP                                                                            +
+ Michael Stonebraker                                                             +
+ H-Store                                                                         +
+ C-Store                                                                         +
+ DW                                                                              +
+ DWPortion ContributersLogical Layout                                            +
+ InstanceCluster                                                                 +
+ DatabaseDatabase(s)                                                             +
+ SchemaSchema(s)                                                                 +
+ Object                                                                          +
+ Field                                                                           +
+ Table(s)                                                                        +
+ Row(s)                                                                          +
+ Index(s)                                                                        +
+ Column                                                                          +
+ (s)                                                                             +
+ View(s)                                                                         +
+ Function(s)                                                                     +
+ Sequence(s)                                                                     +
+ Other(s)Process Introduction                                                    +
+ Shared Memory Area                                                              +
+ IPC                                                                             +
+ APP                                                                             +
+ Handshake                                                                       +
+ &                                                                               +
+ authentication                                                                  +
+ postmaster                                                                      +
+ fork                                                                            +
+ autovacuum launcher                                                             +
+ autovacuum worker                                                               +
+ Shared buffer                                                                   +
+ backend process                                                                 +
+ WAL buffer                                                                      +
+ WAL writer                                                                      +
+ XLOGs                                                                           +
+ Datafiles                                                                       +
+ Archiver                                                                        +
+ ARCH FILEs                                                                      +
+ bgwriterPotion Features                                                         +
+ GEQO                                                                            +
+ WAL                                                                             +
+ Online                                                                          +
+ Backup                                                                          +
+ CBO                                                                             +
+ MVCC                                                                            +
+ PITR                                                                            +
+ Open Source                                                                     +
+ & Free                                                                          +
+ ACID                                                                            +
+ RDBMS                                                                           +
+ Stream                                                                          +
+ ReplicationPowerful Localization                                                +
+ Support                                                                         +
+  Supported Character Sets                                                      +
+  http://www.postgresql.org/docs/9.1/static/multibyte.html                      +
+  Support Database and Column level COLLATE                                     +
+  Example : CREATE TABLE test1 ( a text COLLATE "de_DE", b                      +
+ text COLLATE "es_ES", ... );Powerful Platform Support                           +
+ X86                                                                             +
+ X86_64                                                                          +
+ IA64                                                                            +
+ PowerPC                                                                         +
+ PowerPC 64                                                                      +
+ S/390                                                                           +
+ S/390x                                                                          +
+ Sparc                                                                           +
+ Sparc 64                                                                        +
+ Alpha                                                                           +
+ ARM                                                                             +
+ MIPS                                                                            +
+ MIPSEL                                                                          +
+ M68K                                                                            +
+ PA-RISC                                                                         +
+ Linux                                                                           +
+ Windows                                                                         +
+ FreeBSD                                                                         +
+ OpenBSD                                                                         +
+ NetBSD                                                                          +
+ Mac OS X                                                                        +
+ AIX                                                                             +
+ HP/UX                                                                           +
+ IRIX                                                                            +
+ Solaris                                                                         +
+ Tru64 Unix                                                                      +
+ UnixWareRich Extensions                                                         +
+ adminpackisnpgrowlocks                                                       +
+ auto_explainlopgstattuple                                                    +
+ btree_ginltreeseg                                                            +
+ btree_gistoid2namesepgsql                                                    +
+ chkpasspageinspectspi                                                        +
+ citextpasswordchecksslinfo                                                   +
+ cubepg_buffercachestart-scripts                                              +
+ dblinkpg_freespacemaptablefunc                                               +
+ dict_intpg_standbytest_parser                                                +
+ dict_xsynpg_stat_statementstsearch2                                          +
+ earthdistancepg_test_fsyncunaccent                                           +
+ fuzzystrmatchpg_trgmuuid-ossp                                                +
+ hstorepg_upgradevacuumlo                                                     +
+ intaggpgbenchxml2                                                            +
+ intarraypgcryptoPotion Compare                                                +
+ 1. Language                                                                     +
+ SQL/Plsql                                                                       +
+ 2. Index                                                                        +
+ Global / Partition                                                              +
+ 3. DDL Rollback                                                                 +
+ Cann’t rollback but can recovery from                                           +
+ Backup or Flash Recovery Area.                                                  +
+ 4. Compress                                                                     +
+ Table Level                                                                     +
+ 5. Trigger                                                                      +
+ 6. Data Type                                                                    +
+ ……                                                                              +
+ 1. Language                                                                     +
+ SQL/Plpgsql/Pltcl/Plperl/Plpython…                                              +
+ 2. Index                                                                        +
+ Global(non-partition TABLE)                                                     +
+ Partition                                                                       +
+ Partial Index                                                                   +
+ 3. DDL Rollback                                                                 +
+ Can rollback every ddl sql.                                                     +
+ 4. Compress                                                                     +
+ Column Level(Limited)                                                           +
+ 5. Trigger / Rule                                                               +
+ 6. Data Type extention                                                          +
+ IP / MAC / XML / UUID / …                                                       +
+ ……LimitReliability                                                              +
+  ACID                                                                          +
+  Atomicity                                                                     +
+  All Success or All Fail                                                       +
+  Consistency                                                                   +
+  Only valid data will be written to the database                               +
+  Example：check (age>=0)                                                       +
+  Isolation                                                                     +
+  SERIALIZABLE | REPEATABLE READ | READ COMMITTED |                             +
+ READ UNCOMMITTED                                                                +
+  Durability                                                                    +
+  The ability of the DBMS to recover the committed transaction                  +
+ updates against any kind of system failure (hardware or software).Recoverability+
+  Requirement                                                                   +
+  Baseline Backup                                                               +
+  Parameter                                                                     +
+  Open fsync,full_page_writes                                                   +
+  Optional open synchronous_commit                                              +
+  Open WAL BackupRecoverability                                                 +
+ Mistake                                                                         +
+ Checkpoint                                                                      +
+ Time Line                                                                       +
+ Which Page the first                                                            +
+ Modified after Checkpoint                                                       +
+ WAL                                                                             +
+ Archive                                                                         +
+ Inconsistent Backup                                                             +
+ PITRSecurity                                                                    +
+ PostgreSQL                                                                      +
+ Connection Limit                                                                +
+ Auth Method                                                                     +
+ (Trust,                                                                         +
+ Password,                                                                       +
+ Ident,                                                                          +
+ LDAP…)                                                                          +
+ PG_HBA                                                                          +
+ Listene                                                                         +
+ Which                                                                           +
+ Address                                                                         +
+ Roles                                                                           +
+ GRANT                                                                           +
+ REVOKEScalability                                                               +
+  Hardware                                                                      +
+  Software                                                                      +
+ ProjectTypeMethodStorage                                                        +
+ PlproxyOLTPDistributedCan Shared-nothing                                        +
+ GridSQLDWDistributedCan Shared-nothing                                          +
+ GreenPlumDWDistributedShared-nothing                                            +
+ Aster DataDWDistributedShared-nothing                                           +
+ Postgres-XCOLTPDistributedCan Shared-nothing                                    +
+ Pgpool-IIDWDistributedCan Shared-nothing                                        +
+ Sequoia/Contin                                                                  +
+ uentOLTPDistributedCan Shared-nothing                                           +
+ PGMemcacheOLTPDistributedCachePerformance                                       +
+  SAIO Optimizer                                                                +
+  wulczer.org                                                                   +
+  Virtual Index                                                                 +
+  Prefetch                                                                      +
+  Cache State Persistent                                                        +
+  Tablespace Based IO Cost Value                                                +
+  Async IO                                                                      +
+  Partial Index                                                                 +
+  Parallel restoreHigh-AvailabilityHigh-AvailabilityArchive Case                +
+ Product SAN                                                                     +
+ FingerFingerFingerFingerFinger                                                  +
+ DB1DB2DB3DB4DB5                                                                 +
+ ②                                                                               +
+ Compress Transmit                                                               +
+ 。。。。                                                                        +
+ FingerFinger                                                                    +
+ DBxDBy                                                                          +
+ ③                                                                               +
+ ①                                                                               +
+ Product SAN                                                                     +
+ Cloud Storage(s)                                                                +
+ DNS                                                                             +
+ DB1                                                                             +
+ WAL                                                                             +
+ DB2                                                                             +
+ WAL                                                                             +
+ 。。。。                                                                        +
+ DBx                                                                             +
+ WAL                                                                             +
+ Dby                                                                             +
+ WAL                                                                             +
+ Coordinate                                                                      +
+ DB                                                                              +
+ DB1                                                                             +
+ WAL                                                                             +
+ DB2                                                                             +
+ WAL                                                                             +
+ 。。。。                                                                        +
+ DBx                                                                             +
+ WAL                                                                             +
+ Dby                                                                             +
+ WALHA & DR Case                                                                 +
+ StreamRep                                                                       +
+ pg_xlog                                                                         +
+ HOTStandby_A                                                                    +
+ pg_xlog                                                                         +
+ pg_xlog                                                                         +
+ Primary_A                                                                       +
+ Standby_A                                                                       +
+ Storage Cloud                                                                   +
+ pg_xlog                                                                         +
+ Primary_B                                                                       +
+ pg_xlog                                                                         +
+ Primary_C                                                                       +
+ Storage Cloud                                                                   +
+ WAN                                                                             +
+ Compr                                                                           +
+ ess                                                                             +
+ Transm                                                                          +
+ it                                                                              +
+ pg_xlog                                                                         +
+ Standby_B                                                                       +
+ pg_xlog                                                                         +
+ Standby_CShard-everything HA Case                                               +
+ RHCS                                                                            +
+ Primary                                                                         +
+ Standby                                                                         +
+ FailOver                                                                        +
+ Intervent                                                                       +
+ UP                                                                              +
+ Stream Replication                                                              +
+ SAN 2                                                                           +
+ SAN 1                                                                           +
+ WAL Backup                                                                      +
+ xlog                                                                            +
+ Datafile                                                                        +
+ Backup                                                                          +
+ Used to PITR                                                                    +
+ Datafile                                                                        +
+ DatafileThanks                                                                  +
+  Thanks all people contribute to PostgreSQL.                                   +
+                                                                                +
+ Digoal.Zhou                                                                     +
+                                                                                +
+                                                                                +
+ Blog                                                                            +
+ http://blog.163.com/digoal@126
+(1 row)
+
