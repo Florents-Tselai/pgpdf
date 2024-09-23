@@ -11,6 +11,10 @@ TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-extension=$(EXTENSION)
 
+/tmp/pgintro.pdf:
+	cp test/pgintro.pdf $@
+installcheck: /tmp/pgintro.pdf
+
 DATA = $(wildcard sql/*--*.sql)
 
 UNAME_S := $(shell uname -s)
@@ -37,6 +41,7 @@ PG_LDFLAGS := $(shell pkg-config --libs glib-2.0 poppler-glib cairo)
 endif
 
 SHLIB_LINK=-lglib-2.0 -lpoppler -lgobject-2.0 -lpoppler-glib
+
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
