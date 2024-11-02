@@ -64,16 +64,9 @@ select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('oracle');
 
 ## Installation
 
-**Prerequisites**
-
-* [poppler](https://poppler.freedesktop.org)
-* [glib](https://docs.gtk.org/glib/)
-* [cairo](https://www.cairographics.org)
-
-I've noticed that prefixes for these can be tricky,
-especially on MacOS;
-check the `Makefile` for ideas.
-
+```
+sudo apt install -y libpoppler-glib-dev pkg-config
+```
 ```
 cd /tmp
 git clone https://github.com/Florents-Tselai/pgpdf.git
@@ -85,4 +78,8 @@ make install
 ```tsql
 create extension pgpdf;
 ```
+
+> [!WARNING]
+> Reading arbitrary binary data (PDF) into your database can pose security risks.
+> Only use this for files you trust.
 
