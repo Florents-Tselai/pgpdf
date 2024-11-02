@@ -3,7 +3,7 @@
 #include "fmgr.h"
 #include "utils/builtins.h"
 #include "utils/jsonb.h"
-#include "poppler/glib/poppler.h"
+#include "poppler.h"
 
 #if PG_VERSION_NUM >= 160000
 #include <glib.h>
