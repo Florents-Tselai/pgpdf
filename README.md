@@ -86,3 +86,7 @@ make install
 create extension pgpdf;
 ```
 
+> [!WARNING]
+> Reading arbitrary binary data (PDF) into your database can pose security risks.
+> Only use this for files you trust.
+
