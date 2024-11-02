@@ -21,7 +21,7 @@ jobs:
 
       - run: |
           sudo apt update
-          sudo apt install -y libglib2.0-dev libpoppler-glib-dev libcairo2-dev pkg-config
+          sudo apt install -y libpoppler-glib-dev pkg-config
 
       - uses: ankane/setup-postgres@v1
         with:
