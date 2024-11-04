@@ -568,3 +568,19 @@ select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf'));
  http://blog.163.com/digoal@126
 (1 row)
 
+select '/tmp/aabbcc.pdf'::pdf;
+ERROR:  Error parsing PDF document: No such file or directory
+
+LINE 1: select '/tmp/aabbcc.pdf'::pdf;
+               ^
+select '/tmp/bad.pdf'::pdf;
+ERROR:  Error parsing PDF document: PDF document is damaged
+
+LINE 1: select '/tmp/bad.pdf'::pdf;
+               ^
+select '/tmp/pgintro.pdf'::pdf;
+       pdf        
+------------------
+ /tmp/pgintro.pdf
+(1 row)
+
