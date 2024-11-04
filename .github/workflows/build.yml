@@ -31,6 +31,6 @@ jobs:
       - run: make
       - run: make install
       - run: make installcheck
-           - if: ${{ failure() }}
-           run: cat regression.diffs
+      - if: ${{ failure() }}
+        run: cat regression.diffs
 
