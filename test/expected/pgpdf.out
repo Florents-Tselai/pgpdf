@@ -578,7 +578,7 @@ ERROR:  Error parsing PDF document: PDF document is damaged
 
 LINE 1: select '/tmp/bad.pdf'::pdf;
                ^
-select '/tmp/pggfgintro.pdf'::pdf;
+select '/tmp/pgintro.pdf'::pdf;
        pdf        
 ------------------
  /tmp/pgintro.pdf
