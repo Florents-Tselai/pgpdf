@@ -32,7 +32,7 @@ jobs:
 
       - run: |
           export PG_CONFIG=`which pg_config`
-          sudo --preserve-env=PG_CONFIG make install
+          sudo --preserve-env=PG_CONFIG make install installcheck
 #      - run: make installcheck
 #      - if: ${{ failure() }}
 #        run: cat regression.diffs
