@@ -337,3 +337,29 @@ SELECT '/tmp/pgintro.pdf'::pdf::bytea = pg_read_binary_file('/tmp/pgintro.pdf');
  t
 (1 row)
 
+/* FTS */
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('postgres');
+ ?column? 
+----------
+ t
+(1 row)
+
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
+ ?column? 
+----------
+ f
+(1 row)
+
+/* Old functions mentioned in the blog post. Making sure they continue to work */
+SELECT pdf_read_file('/tmp/pgintro.pdf') = '/tmp/pgintro.pdf'::pdf::text;
+ ?column? 
+----------
+ t
+(1 row)
+
+select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf')) = '/tmp/pgintro.pdf'::pdf::text;
+ ?column? 
+----------
+ t
+(1 row)
+

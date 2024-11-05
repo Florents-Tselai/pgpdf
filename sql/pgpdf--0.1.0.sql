@@ -55,10 +55,6 @@ CREATE FUNCTION pdf_page(pdf, integer) RETURNS TEXT
 AS
 'MODULE_PATHNAME';
 
-
-
-
-
 CREATE FUNCTION bytea_to_pdf(bytea) RETURNS pdf
     LANGUAGE C
     IMMUTABLE
@@ -77,23 +73,19 @@ AS
 CREATE CAST (bytea AS pdf) WITH FUNCTION bytea_to_pdf(bytea) AS ASSIGNMENT;
 CREATE CAST (pdf AS bytea) WITH FUNCTION pdf_to_bytea(pdf) AS ASSIGNMENT;
 
-
 --------------------
---
--- CREATE FUNCTION pdf_read_file(text) returns text AS
--- 'MODULE_PATHNAME',
--- 'pdf_read_file'
---     LANGUAGE C;
---
--- CREATE FUNCTION pdf_read_bytes(bytea) returns text AS
--- 'MODULE_PATHNAME',
--- 'pdf_read_bytes'
---     LANGUAGE C;
---
---
--- CREATE FUNCTION pdf_get_num_pages(pdf) RETURNS integer
---     LANGUAGE C
---     IMMUTABLE
---     STRICT
--- AS
--- 'MODULE_PATHNAME';
+
+CREATE FUNCTION pdf_read_file(text) RETURNS text
+    LANGUAGE SQL
+    IMMUTABLE
+    STRICT
+AS 'SELECT $1::pdf::text';
+
+
+CREATE FUNCTION pdf_read_bytes(bytea) RETURNS text
+    LANGUAGE SQL
+    IMMUTABLE
+    STRICT
+AS 'SELECT $1::bytea::pdf::text';
+
+
