@@ -1,6 +1,10 @@
-# pgPDF: Read PDFs from Postgres
+# pgPDF: `pdf` type for Postgres
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
+
+This is an extension for PostgreSQL that provides a `pdf` data type.
+
+The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
 
 ## Usage
 
@@ -8,40 +12,72 @@
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
 ```
 
-You can use an absolute path to file as a `text` argument
+```tsql
+SELECT '/tmp/pgintro.pdf'::pdf;
+```
 
 ```tsql
-select pdf_read_file('/tmp/pgintro.pdf');
-```
-```tsql
-                                  pdf_read_file                                   
+                                       pdf                                        
 ----------------------------------------------------------------------------------
  PostgreSQL Introduction                                                         +
  Digoal.Zhou                                                                     +
  7/20/2011Catalog                                                                +
-  PostgreSQL Origin                                                             +
+  PostgreSQL Origin 
 ```
 
-If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column:
-
 ```tsql
-select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf'));
-```
-```tsql
-
-                                  pdf_read_bytes                                  
-----------------------------------------------------------------------------------
- PostgreSQL Introduction                                                         +
- Digoal.Zhou                                                                     +
- 7/20/2011Catalog                                                                +
-  PostgreSQL Origin                                                             +
+SELECT pdf_title('/tmp/pgintro.pdf');
 ```
 
-You can now do whatever you want,
-for example full-text search is easy:
+```tsql
+        pdf_title        
+-------------------------
+ PostgreSQL Introduction
+(1 row)
+```
 
 ```tsql
-select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('postgres');
+SELECT pdf_author('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_author 
+------------
+ 周正中
+(1 row)
+```
+
+```tsql
+SELECT pdf_num_pages('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_num_pages 
+---------------
+            24
+(1 row)
+```
+
+```tsql
+SELECT pdf_page('/tmp/pgintro.pdf', 1);
+```
+
+```tsql
+           pdf_page           
+------------------------------
+ Catalog                     +
+  PostgreSQL Origin         +
+  Layout                    +
+  Features                  +
+  Enterprise Class Attribute+
+  Case
+(1 row)
+```
+
+You can also perform full-text search (FTS), since you can work on a `pdf` file like normal text.
+
+```tsql
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('postgres');
 ```
 
 ```tsql
@@ -52,7 +88,7 @@ select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('postgres');
 ```
 
 ```tsql
-select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('oracle');
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 ```
 
 ```tsql
@@ -60,6 +96,13 @@ select pdf_read_file('/tmp/pgintro.pdf') @@ to_tsquery('oracle');
 ----------
  f
 (1 row)
+```
+
+If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
+you can cast a `bytea` to `pdf`, like so:
+
+```tsql
+SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
 ```
 
 ## Installation
@@ -76,7 +119,7 @@ make install
 ```
 
 ```tsql
-create extension pgpdf;
+CREATE EXTENSION pgpdf;
 ```
 
 > [!WARNING]
