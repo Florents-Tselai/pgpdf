@@ -18,15 +18,15 @@ TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-extension=$(EXTENSION)
 
+TEST_FILES = /tmp/pgintro.pdf /tmp/bad.pdf
 /tmp/pgintro.pdf:
 	cp test/pgintro.pdf $@
-
 /tmp/bad.pdf:
 	echo 'not a pdf' >> $@
 
-installcheck: /tmp/pgintro.pdf /tmp/bad.pdf
+installcheck: $(TEST_FILES)
 
-EXTRA_CLEAN = /tmp/pgintro.pdf /tmp/bad.pdf
+EXTRA_CLEAN = $(TEST_FILES)
 
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
