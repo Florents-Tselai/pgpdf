@@ -37,7 +37,7 @@ The following functions are available:
 - `pdf_num_pages(pdf) → integer`
 
   Total number of pages in the document
-- `pdf_page(pdf, integer) -> text`
+- `pdf_page(pdf, integer) → text`
 
   Get the i-th page as text
 - `pdf_creator(pdf) → text`
