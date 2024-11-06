@@ -40,6 +40,11 @@ The following functions are available:
 - `pdf_page(pdf, integer) -> text`
 
   Get the i-th page as text
+- `pdf_creator(pdf) → text`
+- `pdf_keywords(pdf) → text`
+- `pdf_metadata(pdf) → text`
+- `pdf_version(pdf) → text`
+- `pdf_subject(pdf) → text`
 
 Below are some examples
 

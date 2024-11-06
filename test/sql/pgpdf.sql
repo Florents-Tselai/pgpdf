@@ -10,6 +10,12 @@ SELECT pdf_title('/tmp/pgintro.pdf');
 SELECT pdf_author('/tmp/pgintro.pdf');
 SELECT pdf_num_pages('/tmp/pgintro.pdf');
 SELECT pdf_page('/tmp/pgintro.pdf', 1);
+SELECT pdf_creator('/tmp/pgintro.pdf');
+SELECT pdf_keywords('/tmp/pgintro.pdf');
+SELECT pdf_metadata('/tmp/pgintro.pdf');
+SELECT pdf_version('/tmp/pgintro.pdf');
+SELECT pdf_subject('/tmp/pgintro.pdf');
+
 
 /* bytea -> pdf */
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf::text = '/tmp/pgintro.pdf'::pdf::text;
