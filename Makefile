@@ -2,7 +2,6 @@ PG_CONFIG = pg_config
 PKG_CONFIG = pkg-config
 
 EXTENSION = pgpdf
-EXTVERSION = 0.1.0
 
 MODULE_big = $(EXTENSION)
 
