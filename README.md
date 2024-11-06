@@ -45,6 +45,8 @@ The following functions are available:
 - `pdf_metadata(pdf) → text`
 - `pdf_version(pdf) → text`
 - `pdf_subject(pdf) → text`
+- `pdf_creation(pdf) → timestamp`
+- `pdf_modification(pdf) → timestamp`
 
 Below are some examples
 

@@ -15,7 +15,8 @@ SELECT pdf_keywords('/tmp/pgintro.pdf');
 SELECT pdf_metadata('/tmp/pgintro.pdf');
 SELECT pdf_version('/tmp/pgintro.pdf');
 SELECT pdf_subject('/tmp/pgintro.pdf');
-
+SELECT pdf_creation('/tmp/pgintro.pdf');
+SELECT pdf_modification('/tmp/pgintro.pdf');
 
 /* bytea -> pdf */
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf::text = '/tmp/pgintro.pdf'::pdf::text;

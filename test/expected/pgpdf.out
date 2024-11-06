@@ -353,6 +353,18 @@ SELECT pdf_subject('/tmp/pgintro.pdf');
  
 (1 row)
 
+SELECT pdf_creation('/tmp/pgintro.pdf');
+       pdf_creation       
+--------------------------
+ Wed Jul 20 11:13:37 2011
+(1 row)
+
+SELECT pdf_modification('/tmp/pgintro.pdf');
+     pdf_modification     
+--------------------------
+ Wed Jul 20 11:13:37 2011
+(1 row)
+
 /* bytea -> pdf */
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf::text = '/tmp/pgintro.pdf'::pdf::text;
  ?column? 
