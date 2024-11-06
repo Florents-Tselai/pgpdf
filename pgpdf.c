@@ -3,8 +3,10 @@
 #include "fmgr.h"
 #include "utils/builtins.h"
 #include "utils/jsonb.h"
+#include "utils/datetime.h"
+#include "utils/date.h"
+
 #include "poppler.h"
-#include <sys/stat.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -255,6 +257,71 @@ pdf_page(PG_FUNCTION_ARGS)
     PG_RETURN_TEXT_P(cstring_to_text(poppler_page_get_text(page)));
 }
 
+PG_FUNCTION_INFO_V1(pdf_creation);
+
+Datum
+pdf_creation(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    GDateTime *dt = poppler_document_get_creation_date_time(doc);
+
+    if (dt == NULL)
+        PG_RETURN_NULL();
+
+    gint year = g_date_time_get_year(dt);
+    gint month = g_date_time_get_month(dt);
+    gint day = g_date_time_get_day_of_month(dt);
+    gint hour = g_date_time_get_hour(dt);
+    gint minute = g_date_time_get_minute(dt);
+    gint second = g_date_time_get_second(dt);
+
+    g_date_time_unref(dt);
+
+    TimestampTz ts = DatumGetTimestamp(DirectFunctionCall6(
+        make_timestamp,
+        Int32GetDatum(year),
+        Int32GetDatum(month),
+        Int32GetDatum(day),
+        Int32GetDatum(hour),
+        Int32GetDatum(minute),
+        Float8GetDatum((double)second)
+    ));
+
+    PG_RETURN_TIMESTAMPTZ(ts);
+}
+
+PG_FUNCTION_INFO_V1(pdf_modification);
+
+Datum
+pdf_modification(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    GDateTime *dt = poppler_document_get_modification_date_time(doc);
+
+    if (dt == NULL)
+        PG_RETURN_NULL();
+
+    gint year = g_date_time_get_year(dt);
+    gint month = g_date_time_get_month(dt);
+    gint day = g_date_time_get_day_of_month(dt);
+    gint hour = g_date_time_get_hour(dt);
+    gint minute = g_date_time_get_minute(dt);
+    gint second = g_date_time_get_second(dt);
+
+    g_date_time_unref(dt);
+
+    TimestampTz ts = DatumGetTimestamp(DirectFunctionCall6(
+        make_timestamp,
+        Int32GetDatum(year),
+        Int32GetDatum(month),
+        Int32GetDatum(day),
+        Int32GetDatum(hour),
+        Int32GetDatum(minute),
+        Float8GetDatum((double)second)
+    ));
+
+    PG_RETURN_TIMESTAMPTZ(ts);
+}
 
 PG_FUNCTION_INFO_V1(pdf_from_bytea);
 
