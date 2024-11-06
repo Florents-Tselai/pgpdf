@@ -2,11 +2,46 @@
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
 
-This is an extension for PostgreSQL that provides a `pdf` data type.
+This extension for PostgreSQL provides a `pdf` data type.
 
 The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
 
+```tsql
+SELECT '/tmp/pgintro.pdf'::pdf;
+```
+
+```tsql
+                                       pdf                                        
+----------------------------------------------------------------------------------
+ PostgreSQL Introduction                                                         +
+ Digoal.Zhou                                                                     +
+ 7/20/2011Catalog                                                                +
+  PostgreSQL Origin 
+```
+
 ## Usage
+
+Creating a `pdf` type,
+by casting either `text` path or `bytea` blob.
+
+```sql
+SELECT '/path/to.pdf'::pdf;
+
+SELECT ''::bytea::pdf;
+```
+
+The following functions are available:
+
+- `pdf_title(pdf) → text`
+- `pdf_author(pdf) → text`
+- `pdf_num_pages(pdf) → integer`
+
+  Total number of pages in the document
+- `pdf_page(pdf, integer) -> text`
+
+  Get the i-th page as text
+
+Below are some examples
 
 ```sh
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
