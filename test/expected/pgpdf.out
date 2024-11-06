@@ -323,6 +323,36 @@ SELECT pdf_page('/tmp/pgintro.pdf', 1);
   Case
 (1 row)
 
+SELECT pdf_creator('/tmp/pgintro.pdf');
+            pdf_creator             
+------------------------------------
+ Microsoft® Office PowerPoint® 2007
+(1 row)
+
+SELECT pdf_keywords('/tmp/pgintro.pdf');
+ pdf_keywords 
+--------------
+ 
+(1 row)
+
+SELECT pdf_metadata('/tmp/pgintro.pdf');
+ pdf_metadata 
+--------------
+ 
+(1 row)
+
+SELECT pdf_version('/tmp/pgintro.pdf');
+ pdf_version 
+-------------
+ PDF-1.5
+(1 row)
+
+SELECT pdf_subject('/tmp/pgintro.pdf');
+ pdf_subject 
+-------------
+ 
+(1 row)
+
 /* bytea -> pdf */
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf::text = '/tmp/pgintro.pdf'::pdf::text;
  ?column? 

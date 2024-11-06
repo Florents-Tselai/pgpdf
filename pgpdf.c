@@ -32,8 +32,6 @@ typedef struct varlena pdftype;
 #define PG_GETARG_PDF_PP(n)	DatumGetPdfPP(PG_GETARG_DATUM(n))
 #define PG_RETURN_PDF_P(x)	PG_RETURN_POINTER(x)
 
-
-
 #define PG_GETARG_POPPLER_DOCUMENT(X) ({ \
     pdftype* pdf = PG_GETARG_PDF_P(X); \
     GError* error = NULL; \
@@ -146,21 +144,94 @@ pdf_out(PG_FUNCTION_ARGS)
 
 
 PG_FUNCTION_INFO_V1(pdf_title);
-
 Datum
 pdf_title(PG_FUNCTION_ARGS)
 {
-    PopplerDocument* doc = PG_GETARG_POPPLER_DOCUMENT(0);
-    PG_RETURN_TEXT_P(cstring_to_text(poppler_document_get_title(doc)));
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *title = poppler_document_get_title(doc);
+
+    if (title == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(title));
 }
 
 PG_FUNCTION_INFO_V1(pdf_author);
-
 Datum
 pdf_author(PG_FUNCTION_ARGS)
 {
-    PopplerDocument* doc = PG_GETARG_POPPLER_DOCUMENT(0);
-    PG_RETURN_TEXT_P(cstring_to_text(poppler_document_get_author(doc)));
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *author = poppler_document_get_author(doc);
+
+    if (author == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(author));
+}
+
+PG_FUNCTION_INFO_V1(pdf_creator);
+Datum
+pdf_creator(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *creator = poppler_document_get_creator(doc);
+
+    if (creator == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(creator));
+}
+
+PG_FUNCTION_INFO_V1(pdf_keywords);
+Datum
+pdf_keywords(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *keywords = poppler_document_get_keywords(doc);
+
+    if (keywords == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(keywords));
+}
+
+PG_FUNCTION_INFO_V1(pdf_metadata);
+Datum
+pdf_metadata(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *metadata = poppler_document_get_metadata(doc);
+
+    if (metadata == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(metadata));
+}
+
+PG_FUNCTION_INFO_V1(pdf_version);
+Datum
+pdf_version(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *version = poppler_document_get_pdf_version_string(doc);
+
+    if (version == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(version));
+}
+
+PG_FUNCTION_INFO_V1(pdf_subject);
+Datum
+pdf_subject(PG_FUNCTION_ARGS)
+{
+    PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
+    const char *subject = poppler_document_get_subject(doc);
+
+    if (subject == NULL)
+        PG_RETURN_NULL();
+
+    PG_RETURN_TEXT_P(cstring_to_text(subject));
 }
 
 PG_FUNCTION_INFO_V1(pdf_num_pages);
@@ -171,6 +242,7 @@ pdf_num_pages(PG_FUNCTION_ARGS)
     PopplerDocument* doc = PG_GETARG_POPPLER_DOCUMENT(0);
     PG_RETURN_INT32(poppler_document_get_n_pages(doc));
 }
+
 
 PG_FUNCTION_INFO_V1(pdf_page);
 
