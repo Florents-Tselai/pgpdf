@@ -52,51 +52,28 @@ PG_FUNCTION_INFO_V1(pdf_in);
 Datum
 pdf_in(PG_FUNCTION_ARGS)
 {
-    char* file_path = PG_GETARG_CSTRING(0);
+    Datum filename_t = CStringGetTextDatum(PG_GETARG_CSTRING(0));
+    Datum pdf_bytes;
+    int32 pdf_bytes_len;
+
     pdftype* result;
+    GBytes* g_bytes = NULL;
     PopplerDocument* doc = NULL;
     GError* error = NULL;
-    int fd;
-    struct stat file_info;
-    ssize_t bytes_read;
-    GBytes* pdf_data;
 
-    // Open file and check if accessible
-    fd = open(file_path, O_RDONLY);
-    if (fd == -1)
-    {
-        elog(ERROR, "Could not open PDF file: %s", file_path);
-    }
+    pdf_bytes = DirectFunctionCall1(pg_read_binary_file_all, filename_t);
+    pdf_bytes_len = VARSIZE_ANY_EXHDR(pdf_bytes);
 
-    // Get file size
-    if (fstat(fd, &file_info) == -1)
-    {
-        close(fd);
-        elog(ERROR, "Could not retrieve file information for: %s", file_path);
-    }
+    result = (pdftype*)palloc(VARHDRSZ + pdf_bytes_len);
+    SET_VARSIZE(result, VARHDRSZ + pdf_bytes_len);
 
-    // Allocate pdftype struct with space for PDF data
-    int32 data_size = file_info.st_size;
-    result = (pdftype*)palloc(VARHDRSZ + data_size);
-    SET_VARSIZE(result, VARHDRSZ + data_size);
+    memcpy(VARDATA(result), VARDATA_ANY(pdf_bytes), pdf_bytes_len);
 
-    // Read file contents into pdftype->data
-    bytes_read = read(fd, VARDATA(result), data_size);
-    if (bytes_read != data_size)
-    {
-        close(fd);
-        elog(ERROR, "Could not read entire PDF file: %s", file_path);
-    }
+    g_bytes = g_bytes_new(VARDATA(result), pdf_bytes_len);
 
-    // Close file
-    close(fd);
+    doc = poppler_document_new_from_bytes(g_bytes, NULL, &error);
+    g_bytes_unref(g_bytes);
 
-    // Create GBytes from the PDF data for validation
-    pdf_data = g_bytes_new(VARDATA(result), data_size);
-
-    // Validate PDF using Poppler
-    doc = poppler_document_new_from_bytes(pdf_data, NULL, &error);
-    g_bytes_unref(pdf_data); // Free GBytes after use
     if (!doc)
     {
         elog(ERROR, "Error parsing PDF document: %s", error->message);
@@ -104,6 +81,7 @@ pdf_in(PG_FUNCTION_ARGS)
         g_clear_error(&error);
         PG_RETURN_NULL();
     }
+
     g_object_unref(doc);
 
     PG_RETURN_POINTER(result);
