@@ -2,7 +2,7 @@
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
 
-This extension for PostgreSQL provides a `pdf` data type.
+This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
 The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
 
