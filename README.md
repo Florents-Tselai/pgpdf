@@ -54,6 +54,8 @@ Below are some examples
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
 ```
 
+### Content
+
 ```tsql
 SELECT '/tmp/pgintro.pdf'::pdf;
 ```
@@ -78,16 +80,7 @@ SELECT pdf_title('/tmp/pgintro.pdf');
 (1 row)
 ```
 
-```tsql
-SELECT pdf_author('/tmp/pgintro.pdf');
-```
-
-```tsql
- pdf_author 
-------------
- 周正中
-(1 row)
-```
+Getting a subset of pages
 
 ```tsql
 SELECT pdf_num_pages('/tmp/pgintro.pdf');
@@ -116,6 +109,87 @@ SELECT pdf_page('/tmp/pgintro.pdf', 1);
 (1 row)
 ```
 
+```tsql
+SELECT pdf_subject('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_subject 
+-------------
+ 
+(1 row)
+```
+
+### Metadata
+
+```tsql
+SELECT pdf_author('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_author 
+------------
+ 周正中
+(1 row)
+```
+
+```tsql
+SELECT pdf_creation('/tmp/pgintro.pdf');
+```
+
+```tsql
+       pdf_creation       
+--------------------------
+ Wed Jul 20 11:13:37 2011
+(1 row)
+```
+
+```tsql
+SELECT pdf_modification('/tmp/pgintro.pdf');
+```
+
+```tsql
+     pdf_modification     
+--------------------------
+ Wed Jul 20 11:13:37 2011
+(1 row)
+```
+
+```tsql
+SELECT pdf_creator('/tmp/pgintro.pdf');
+```
+
+```tsql
+            pdf_creator             
+------------------------------------
+ Microsoft® Office PowerPoint® 2007
+(1 row)
+```
+
+```tsql
+SELECT pdf_metadata('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_metadata 
+--------------
+ 
+(1 row)
+```
+
+```tsql
+SELECT pdf_version('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_version 
+-------------
+ PDF-1.5
+(1 row)
+```
+
+### FTS
+
 You can also perform full-text search (FTS), since you can work on a `pdf` file like normal text.
 
 ```tsql
@@ -139,6 +213,8 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
  f
 (1 row)
 ```
+
+### `bytea`
 
 If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
 you can cast a `bytea` to `pdf`, like so:
