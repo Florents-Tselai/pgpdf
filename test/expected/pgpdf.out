@@ -1,6 +1,6 @@
 /* Errors */
 SELECT 'notexists.pdf'::pdf;
-ERROR:  Could not open PDF file: notexists.pdf
+ERROR:  could not open file "notexists.pdf" for reading: No such file or directory
 LINE 2: SELECT 'notexists.pdf'::pdf;
                ^
 SELECT '/tmp/bad.pdf'::pdf;
