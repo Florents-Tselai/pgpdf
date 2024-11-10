@@ -9,6 +9,7 @@ OBJS = pgpdf.o
 
 DATA = $(wildcard sql/*--*.sql)
 
+PG_CFLAGS = -DUSE_ASSERT_CHECKING -Wall -Wextra -Werror -Wno-unused-parameter
 PG_CPPFLAGS = $(shell $(PKG_CONFIG) --cflags poppler poppler-glib)
 PG_LDFLAGS = $(shell $(PKG_CONFIG) --libs poppler poppler-glib)
 SHLIB_LINK =-lpoppler -lpoppler-glib
