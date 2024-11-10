@@ -18,7 +18,8 @@ CREATE TYPE pdf
 (
     INTERNALLENGTH = -1,
     INPUT = pdf_in,
-    OUTPUT = pdf_out
+    OUTPUT = pdf_out,
+    STORAGE = extended
 );
 
 CREATE CAST (pdf AS text) WITH INOUT AS ASSIGNMENT;
