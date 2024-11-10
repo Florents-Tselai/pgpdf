@@ -29,6 +29,11 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('postgres');
 SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 
 /* Old functions mentioned in the blog post. Making sure they continue to work */
-
 SELECT pdf_read_file('/tmp/pgintro.pdf') = '/tmp/pgintro.pdf'::pdf::text;
 select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf')) = '/tmp/pgintro.pdf'::pdf::text;
+
+/* bigger files: >8KB */
+CREATE TABLE pdfs(i serial primary key, d pdf);
+INSERT INTO pdfs(d) VALUES('/tmp/pgintro.pdf');
+INSERT INTO pdfs(d) VALUES('/tmp/big.pdf');
+SELECT length(d::text) FROM pdfs
