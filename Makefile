@@ -17,11 +17,10 @@ TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-extension=$(EXTENSION)
 
-TEST_FILES = /tmp/pgintro.pdf /tmp/bad.pdf
-/tmp/pgintro.pdf:
-	cp test/pgintro.pdf $@
-/tmp/bad.pdf:
-	echo 'not a pdf' >> $@
+TEST_FILES = /tmp/pgintro.pdf /tmp/bad.pdf /tmp/big.pdf
+
+/tmp/%.pdf: test/pdf/%.pdf
+	cp $< $@
 
 installcheck: $(TEST_FILES)
 
