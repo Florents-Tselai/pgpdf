@@ -16,7 +16,7 @@ jobs:
           - postgres: 15
             os: ubuntu-22.04
           - postgres: 14
-            os: ubuntu-20.04
+            os: ubuntu-22.04
           - postgres: 13
             os: ubuntu-20.04
 
