@@ -36,3 +36,4 @@ select pdf_read_bytes(pg_read_binary_file('/tmp/pgintro.pdf')) = '/tmp/pgintro.p
 CREATE TABLE pdfs(i serial primary key, d pdf);
 INSERT INTO pdfs(d) VALUES('/tmp/pgintro.pdf');
 INSERT INTO pdfs(d) VALUES('/tmp/big.pdf');
+SELECT length(d::text) FROM pdfs;
