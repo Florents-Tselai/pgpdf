@@ -19,6 +19,10 @@ SELECT '/tmp/pgintro.pdf'::pdf;
   PostgreSQL Origin 
 ```
 
+Also check blog: 
+- [Full Text Search on PDFs With Postgres](https://tselai.com/full-text-search-pdf-postgres)
+- [pgpdf: pdf type for Postgres](https://tselai.com/pgpdf-pdf-type-postgres)
+
 ## Usage
 
 Creating a `pdf` type,
