@@ -58,6 +58,40 @@ Below are some examples
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
 ```
 
+### FTS
+
+You can also perform full-text search (FTS), since you can work on a `pdf` file like normal text.
+
+```tsql
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('postgres');
+```
+
+```tsql
+ ?column? 
+----------
+ t
+(1 row)
+```
+
+```tsql
+SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
+```
+
+```tsql
+ ?column? 
+----------
+ f
+(1 row)
+```
+
+### `bytea`
+
+If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
+you can cast a `bytea` to `pdf`, like so:
+
+```tsql
+SELE
+
 ### Content
 
 ```tsql
@@ -192,39 +226,7 @@ SELECT pdf_version('/tmp/pgintro.pdf');
 (1 row)
 ```
 
-### FTS
-
-You can also perform full-text search (FTS), since you can work on a `pdf` file like normal text.
-
-```tsql
-SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('postgres');
-```
-
-```tsql
- ?column? 
-----------
- t
-(1 row)
-```
-
-```tsql
-SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
-```
-
-```tsql
- ?column? 
-----------
- f
-(1 row)
-```
-
-### `bytea`
-
-If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
-you can cast a `bytea` to `pdf`, like so:
-
-```tsql
-SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
+CT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
 ```
 
 ## Installation
