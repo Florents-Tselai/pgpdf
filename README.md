@@ -31,26 +31,8 @@ by casting either `text` path or `bytea` blob.
 ```sql
 SELECT '/path/to.pdf'::pdf;
 
-SELECT ''::bytea::pdf;
+SELECT pg_read_binary_file('/path/to.pdf')::bytea::pdf;
 ```
-
-The following functions are available:
-
-- `pdf_title(pdf) → text`
-- `pdf_author(pdf) → text`
-- `pdf_num_pages(pdf) → integer`
-
-  Total number of pages in the document
-- `pdf_page(pdf, integer) → text`
-
-  Get the i-th page as text
-- `pdf_creator(pdf) → text`
-- `pdf_keywords(pdf) → text`
-- `pdf_metadata(pdf) → text`
-- `pdf_version(pdf) → text`
-- `pdf_subject(pdf) → text`
-- `pdf_creation(pdf) → timestamp`
-- `pdf_modification(pdf) → timestamp`
 
 Below are some examples
 
@@ -58,7 +40,7 @@ Below are some examples
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
 ```
 
-### FTS
+### Full-Text Search (FTS)
 
 You can also perform full-text search (FTS), since you can work on a `pdf` file like normal text.
 
@@ -89,8 +71,12 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
 you can cast a `bytea` to `pdf`, like so:
 
+If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
+you can cast a `bytea` to `pdf`, like so:
+
 ```tsql
-SELE
+SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
+```
 
 ### Content
 
@@ -160,6 +146,24 @@ SELECT pdf_subject('/tmp/pgintro.pdf');
 
 ### Metadata
 
+The following functions are available:
+
+- `pdf_title(pdf) → text`
+- `pdf_author(pdf) → text`
+- `pdf_num_pages(pdf) → integer`
+
+  Total number of pages in the document
+- `pdf_page(pdf, integer) → text`
+
+  Get the i-th page as text
+- `pdf_creator(pdf) → text`
+- `pdf_keywords(pdf) → text`
+- `pdf_metadata(pdf) → text`
+- `pdf_version(pdf) → text`
+- `pdf_subject(pdf) → text`
+- `pdf_creation(pdf) → timestamp`
+- `pdf_modification(pdf) → timestamp`
+
 ```tsql
 SELECT pdf_author('/tmp/pgintro.pdf');
 ```
@@ -224,9 +228,6 @@ SELECT pdf_version('/tmp/pgintro.pdf');
 -------------
  PDF-1.5
 (1 row)
-```
-
-CT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
 ```
 
 ## Installation
