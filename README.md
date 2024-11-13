@@ -71,9 +71,6 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
 you can cast a `bytea` to `pdf`, like so:
 
-If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
-you can cast a `bytea` to `pdf`, like so:
-
 ```tsql
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
 ```
