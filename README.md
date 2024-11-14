@@ -27,17 +27,16 @@ you can just cast it to `pdf`.
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::bytea::pdf;
 ```
 
+**Why?**: 
+This allows you to work with PDFs in an ACID-compliant way.
+The usual alternative relies on external scripts or services which can easily 
+make your data ingestion pipeline brittle and leave your raw data out-of-sync.
 
 The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
 
 Also check blog: 
 - [Full Text Search on PDFs With Postgres](https://tselai.com/full-text-search-pdf-postgres)
 - [pgpdf: pdf type for Postgres](https://tselai.com/pgpdf-pdf-type-postgres)
-
-**Why?**: 
-This allows you to work with PDFs in an ACID-compliant way.
-The usual alternative relies on external scripts or services which can easily 
-make your data ingestion pipeline brittle and leave your raw data out-of-sync.
 
 ## Usage
 
