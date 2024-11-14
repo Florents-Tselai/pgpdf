@@ -72,6 +72,9 @@ should work as usual:
 
 ```tsql
 SELECT 'Below is the PDF we received ' || '/tmp/pgintro.pdf'::pdf;
+```
+
+```tsql
 SELECT upper('/tmp/pgintro.pdf'::pdf::text);
 ```
 
@@ -110,7 +113,7 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 ### Document similarity with `pg_trgm`
 
 You can use [pg_trgm](https://postgresql.org/docs/17/interactive/pgtrgm.html)
-to get the similarity between to documents:
+to get the similarity between two documents:
 
 ```tsql
 CREATE EXTENSION pg_trgm;
@@ -118,20 +121,25 @@ CREATE EXTENSION pg_trgm;
 SELECT similarity('/tmp/pgintro.pdf'::pdf::text, '/tmp/sample.pdf'::pdf::text);
 ```
 
-### Content
+### Metadata
 
-```tsql
-SELECT '/tmp/pgintro.pdf'::pdf;
-```
+The following functions are available:
 
-```tsql
-                                       pdf                                        
-----------------------------------------------------------------------------------
- PostgreSQL Introduction                                                         +
- Digoal.Zhou                                                                     +
- 7/20/2011Catalog                                                                +
-  PostgreSQL Origin 
-```
+- `pdf_title(pdf) → text`
+- `pdf_author(pdf) → text`
+- `pdf_num_pages(pdf) → integer`
+
+  Total number of pages in the document
+- `pdf_page(pdf, integer) → text`
+
+  Get the i-th page as text
+- `pdf_creator(pdf) → text`
+- `pdf_keywords(pdf) → text`
+- `pdf_metadata(pdf) → text`
+- `pdf_version(pdf) → text`
+- `pdf_subject(pdf) → text`
+- `pdf_creation(pdf) → timestamp`
+- `pdf_modification(pdf) → timestamp`
 
 ```tsql
 SELECT pdf_title('/tmp/pgintro.pdf');
@@ -141,6 +149,17 @@ SELECT pdf_title('/tmp/pgintro.pdf');
         pdf_title        
 -------------------------
  PostgreSQL Introduction
+(1 row)
+```
+
+```tsql
+SELECT pdf_author('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_author 
+------------
+ 周正中
 (1 row)
 ```
 
@@ -181,37 +200,6 @@ SELECT pdf_subject('/tmp/pgintro.pdf');
  pdf_subject 
 -------------
  
-(1 row)
-```
-
-### Metadata
-
-The following functions are available:
-
-- `pdf_title(pdf) → text`
-- `pdf_author(pdf) → text`
-- `pdf_num_pages(pdf) → integer`
-
-  Total number of pages in the document
-- `pdf_page(pdf, integer) → text`
-
-  Get the i-th page as text
-- `pdf_creator(pdf) → text`
-- `pdf_keywords(pdf) → text`
-- `pdf_metadata(pdf) → text`
-- `pdf_version(pdf) → text`
-- `pdf_subject(pdf) → text`
-- `pdf_creation(pdf) → timestamp`
-- `pdf_modification(pdf) → timestamp`
-
-```tsql
-SELECT pdf_author('/tmp/pgintro.pdf');
-```
-
-```tsql
- pdf_author 
-------------
- 周正中
 (1 row)
 ```
 
