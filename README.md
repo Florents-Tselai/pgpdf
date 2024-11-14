@@ -4,7 +4,7 @@
 
 This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
-The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
+You can create a `pdf` type, by casting either a `text` filepath or `bytea` column.
 
 ```tsql
 SELECT '/tmp/pgintro.pdf'::pdf;
@@ -19,25 +19,47 @@ SELECT '/tmp/pgintro.pdf'::pdf;
   PostgreSQL Origin 
 ```
 
+If you don’t have the PDF file in your filesystem,
+but have already stored its content in a `bytea` column,
+you can just cast it to `pdf`.
+
+```
+SELECT pg_read_binary_file('/tmp/pgintro.pdf')::bytea::pdf;
+```
+
+> [!NOTE]
+> The filepath should be accessible by the `postgres` process / user!
+> That's different than the user running psql.
+> If you don't understand what this means, as your DBA!
+
+The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
+
 Also check blog: 
 - [Full Text Search on PDFs With Postgres](https://tselai.com/full-text-search-pdf-postgres)
 - [pgpdf: pdf type for Postgres](https://tselai.com/pgpdf-pdf-type-postgres)
 
+### Why Do This ?
+
+This allows you to work with PDFs in an ACID-compliant way.
+The usual alternative relies on external scripts or services which can easily 
+make your data ingestion pipeline brittle and leave your raw data out-of-sync.
+
 ## Usage
 
-Creating a `pdf` type,
-by casting either `text` path or `bytea` blob.
-
-```sql
-SELECT '/path/to.pdf'::pdf;
-
-SELECT pg_read_binary_file('/path/to.pdf')::bytea::pdf;
-```
-
-Below are some examples
+Download a sample PDF. 
 
 ```sh
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
+```
+
+### String Functions and Operators
+
+Standard Postgres [String Functions and Operators](https://www.postgresql.org/docs/17/functions-string.html)
+should work as usual:
+
+```tsql
+SELECT 'Below is the PDF we received ' || '/tmp/pgintro.pdf'::pdf;
+SELECT upper('/tmp/pgintro.pdf'::pdf::text);
 ```
 
 ### Full-Text Search (FTS)
@@ -64,15 +86,6 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 ----------
  f
 (1 row)
-```
-
-### `bytea`
-
-If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
-you can cast a `bytea` to `pdf`, like so:
-
-```tsql
-SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
 ```
 
 ### Content
