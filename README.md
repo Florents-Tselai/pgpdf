@@ -4,7 +4,7 @@
 
 This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
-The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
+You can create a `pdf` type, by casting either a `text` filepath or `bytea` column.
 
 ```tsql
 SELECT '/tmp/pgintro.pdf'::pdf;
@@ -19,25 +19,68 @@ SELECT '/tmp/pgintro.pdf'::pdf;
   PostgreSQL Origin 
 ```
 
+If you don’t have the PDF file in your filesystem,
+but have already stored its content in a `bytea` column,
+you can just cast it to `pdf`.
+
+```tsql
+SELECT pg_read_binary_file('/tmp/pgintro.pdf')::bytea::pdf;
+```
+
+**Why?**: 
+This allows you to work with PDFs in an ACID-compliant way.
+The usual alternative relies on external scripts or services which can easily 
+make your data ingestion pipeline brittle and leave your raw data out-of-sync.
+
+The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
+
 Also check blog: 
 - [Full Text Search on PDFs With Postgres](https://tselai.com/full-text-search-pdf-postgres)
 - [pgpdf: pdf type for Postgres](https://tselai.com/pgpdf-pdf-type-postgres)
 
 ## Usage
 
-Creating a `pdf` type,
-by casting either `text` path or `bytea` blob.
-
-```sql
-SELECT '/path/to.pdf'::pdf;
-
-SELECT pg_read_binary_file('/path/to.pdf')::bytea::pdf;
-```
-
-Below are some examples
+Download some PDFs. 
 
 ```sh
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
+wget https://pdfobject.com/pdf/sample.pdf -O /tmp/sample.pdf
+```
+
+Create a table with a `pdf` column:
+
+```tsql
+CREATE TABLE pdfs(name text primary key, doc pdf);
+
+INSERT INTO pdfs VALUES ('pgintro', '/tmp/pgintro.pdf');
+INSERT INTO pdfs VALUES ('pgintro', '/tmp/sample.pdf');
+```
+
+Parsing and validation should happen automatically.
+The files will be read from the disk only once!
+
+> [!NOTE]
+> The filepath should be accessible by the `postgres` process / user!
+> That's different than the user running psql.
+> If you don't understand what this means, as your DBA!
+
+### String Functions and Operators
+
+Standard Postgres [String Functions and Operators](https://www.postgresql.org/docs/17/functions-string.html)
+should work as usual:
+
+```tsql
+SELECT 'Below is the PDF we received ' || '/tmp/pgintro.pdf'::pdf;
+```
+
+```tsql
+SELECT upper('/tmp/pgintro.pdf'::pdf::text);
+```
+
+``` tsql
+SELECT name
+FROM pdfs
+WHERE doc::text LIKE '%Postgres%';
 ```
 
 ### Full-Text Search (FTS)
@@ -66,29 +109,36 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 (1 row)
 ```
 
-### `bytea`
+### Document similarity with `pg_trgm`
 
-If you don't have the PDF file in your filesystem but have already stored its content in a `bytea` column,
-you can cast a `bytea` to `pdf`, like so:
-
-```tsql
-SELECT pg_read_binary_file('/tmp/pgintro.pdf')::pdf
-```
-
-### Content
+You can use [pg_trgm](https://postgresql.org/docs/17/interactive/pgtrgm.html)
+to get the similarity between two documents:
 
 ```tsql
-SELECT '/tmp/pgintro.pdf'::pdf;
+CREATE EXTENSION pg_trgm;
+
+SELECT similarity('/tmp/pgintro.pdf'::pdf::text, '/tmp/sample.pdf'::pdf::text);
 ```
 
-```tsql
-                                       pdf                                        
-----------------------------------------------------------------------------------
- PostgreSQL Introduction                                                         +
- Digoal.Zhou                                                                     +
- 7/20/2011Catalog                                                                +
-  PostgreSQL Origin 
-```
+### Metadata
+
+The following functions are available:
+
+- `pdf_title(pdf) → text`
+- `pdf_author(pdf) → text`
+- `pdf_num_pages(pdf) → integer`
+
+  Total number of pages in the document
+- `pdf_page(pdf, integer) → text`
+
+  Get the i-th page as text
+- `pdf_creator(pdf) → text`
+- `pdf_keywords(pdf) → text`
+- `pdf_metadata(pdf) → text`
+- `pdf_version(pdf) → text`
+- `pdf_subject(pdf) → text`
+- `pdf_creation(pdf) → timestamp`
+- `pdf_modification(pdf) → timestamp`
 
 ```tsql
 SELECT pdf_title('/tmp/pgintro.pdf');
@@ -98,6 +148,17 @@ SELECT pdf_title('/tmp/pgintro.pdf');
         pdf_title        
 -------------------------
  PostgreSQL Introduction
+(1 row)
+```
+
+```tsql
+SELECT pdf_author('/tmp/pgintro.pdf');
+```
+
+```tsql
+ pdf_author 
+------------
+ 周正中
 (1 row)
 ```
 
@@ -138,37 +199,6 @@ SELECT pdf_subject('/tmp/pgintro.pdf');
  pdf_subject 
 -------------
  
-(1 row)
-```
-
-### Metadata
-
-The following functions are available:
-
-- `pdf_title(pdf) → text`
-- `pdf_author(pdf) → text`
-- `pdf_num_pages(pdf) → integer`
-
-  Total number of pages in the document
-- `pdf_page(pdf, integer) → text`
-
-  Get the i-th page as text
-- `pdf_creator(pdf) → text`
-- `pdf_keywords(pdf) → text`
-- `pdf_metadata(pdf) → text`
-- `pdf_version(pdf) → text`
-- `pdf_subject(pdf) → text`
-- `pdf_creation(pdf) → timestamp`
-- `pdf_modification(pdf) → timestamp`
-
-```tsql
-SELECT pdf_author('/tmp/pgintro.pdf');
-```
-
-```tsql
- pdf_author 
-------------
- 周正中
 (1 row)
 ```
 
