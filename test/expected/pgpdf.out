@@ -413,6 +413,6 @@ SELECT length(d::text) FROM pdfs
  length  
 ---------
     4182
- 7055974
+ 6042170
 (2 rows)
 

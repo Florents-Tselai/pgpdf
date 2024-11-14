@@ -23,7 +23,7 @@ TEST_FILES = /tmp/pgintro.pdf /tmp/bad.pdf /tmp/big.pdf
 /tmp/bad.pdf:
 	echo 'not a pdf' >> $@
 /tmp/big.pdf:
-	wget https://www.postgresql.org/files/documentation/pdf/17/postgresql-17-A4.pdf -O $@
+	wget https://www.postgresql.org/files/documentation/pdf/10/postgresql-10-A4.pdf -O $@
 
 installcheck: $(TEST_FILES)
 
