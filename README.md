@@ -1,6 +1,7 @@
 # pgPDF: `pdf` type for Postgres
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
+![GitHub Repo stars](https://img.shields.io/github/stars/Florents-Tselai/pgpdf)
 
 This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
