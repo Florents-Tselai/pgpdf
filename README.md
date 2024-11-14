@@ -23,14 +23,10 @@ If you don’t have the PDF file in your filesystem,
 but have already stored its content in a `bytea` column,
 you can just cast it to `pdf`.
 
-```
+```tsql
 SELECT pg_read_binary_file('/tmp/pgintro.pdf')::bytea::pdf;
 ```
 
-> [!NOTE]
-> The filepath should be accessible by the `postgres` process / user!
-> That's different than the user running psql.
-> If you don't understand what this means, as your DBA!
 
 The actual PDF parsing is done by [poppler](https://poppler.freedesktop.org).
 
@@ -38,19 +34,36 @@ Also check blog:
 - [Full Text Search on PDFs With Postgres](https://tselai.com/full-text-search-pdf-postgres)
 - [pgpdf: pdf type for Postgres](https://tselai.com/pgpdf-pdf-type-postgres)
 
-### Why Do This ?
-
+**Why?**: 
 This allows you to work with PDFs in an ACID-compliant way.
 The usual alternative relies on external scripts or services which can easily 
 make your data ingestion pipeline brittle and leave your raw data out-of-sync.
 
 ## Usage
 
-Download a sample PDF. 
+Download some PDFs. 
 
 ```sh
 wget https://wiki.postgresql.org/images/e/ea/PostgreSQL_Introduction.pdf -O /tmp/pgintro.pdf
+wget https://pdfobject.com/pdf/sample.pdf -O /tmp/sample.pdf
 ```
+
+Create a table with a `pdf` column:
+
+```tsql
+CREATE TABLE pdfs(name text primary key, doc pdf);
+
+INSERT INTO pdfs VALUES ('pgintro', '/tmp/pgintro.pdf');
+INSERT INTO pdfs VALUES ('pgintro', '/tmp/sample.pdf');
+```
+
+Parsing and validation should happen automatically.
+The files will be read from the disk only once!
+
+> [!NOTE]
+> The filepath should be accessible by the `postgres` process / user!
+> That's different than the user running psql.
+> If you don't understand what this means, as your DBA!
 
 ### String Functions and Operators
 
@@ -60,6 +73,12 @@ should work as usual:
 ```tsql
 SELECT 'Below is the PDF we received ' || '/tmp/pgintro.pdf'::pdf;
 SELECT upper('/tmp/pgintro.pdf'::pdf::text);
+```
+
+``` tsql
+SELECT name
+FROM pdfs
+WHERE doc::text LIKE '%Postgres%';
 ```
 
 ### Full-Text Search (FTS)
@@ -86,6 +105,17 @@ SELECT '/tmp/pgintro.pdf'::pdf::text @@ to_tsquery('oracle');
 ----------
  f
 (1 row)
+```
+
+### Document similarity with `pg_trgm`
+
+You can use [pg_trgm](https://postgresql.org/docs/17/interactive/pgtrgm.html)
+to get the similarity between to documents:
+
+```tsql
+CREATE EXTENSION pg_trgm;
+
+SELECT similarity('/tmp/pgintro.pdf'::pdf::text, '/tmp/sample.pdf'::pdf::text);
 ```
 
 ### Content
