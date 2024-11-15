@@ -260,20 +260,42 @@ SELECT pdf_version('/tmp/pgintro.pdf');
 
 ## Installation
 
+Install [poppler](https://poppler.freedesktop.org) dependencies
+
+**Linux**
 ```
 sudo apt install -y libpoppler-glib-dev pkg-config
 ```
+
+**Homebrew/MacOS**
+
+```
+brew install poppler pkgconf
+```
+
 ```
 cd /tmp
 git clone https://github.com/Florents-Tselai/pgpdf.git
 cd pgpdf
 make
-make install
+make install # may need sudo
 ```
+
+After the installation, in a session:
 
 ```tsql
 CREATE EXTENSION pgpdf;
 ```
+
+### Docker
+
+Get the [Docker image](https://hub.docker.com/r/florents/pgpdf) with:
+
+```sh
+docker pull florents/pgpdf:pg17
+```
+
+This adds pgpdf to the [Postgres image](https://hub.docker.com/_/postgres) (replace `17` with your Postgres server version, and run it the same way).
 
 > [!WARNING]
 > Reading arbitrary binary data (PDF) into your database can pose security risks.
