@@ -2,6 +2,7 @@
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Florents-Tselai/pgpdf)
+![Docker Pulls](https://img.shields.io/docker/pulls/florents/pgpdf)
 
 This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
