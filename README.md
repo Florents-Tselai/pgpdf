@@ -298,6 +298,18 @@ docker pull florents/pgpdf:pg17
 
 This adds pgpdf to the [Postgres image](https://hub.docker.com/_/postgres) (replace `17` with your Postgres server version, and run it the same way).
 
+Run the image in a container.
+
+```sh
+docker run --name pgpdf -p 5432:5432 -e POSTGRES_PASSWORD=pass florents/pgpdf:0.1.0-pg17
+```
+
+Through another terminal, connect to the running server (container).
+
+```sh
+PGPASSWORD=pass psql -h localhost -p 5432 -U postgres
+```
+
 > [!WARNING]
 > Reading arbitrary binary data (PDF) into your database can pose security risks.
 > Only use this for files you trust.
