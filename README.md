@@ -301,7 +301,7 @@ This adds pgpdf to the [Postgres image](https://hub.docker.com/_/postgres) (repl
 Run the image in a container.
 
 ```sh
-docker run --name pgpdf -p 5432:5432 -e POSTGRES_PASSWORD=pass florents/pgpdf:0.1.0-pg17
+docker run --name pgpdf -p 5432:5432 -e POSTGRES_PASSWORD=pass florents/pgpdf:pg17
 ```
 
 Through another terminal, connect to the running server (container).
