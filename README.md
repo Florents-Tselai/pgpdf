@@ -2,6 +2,7 @@
 
 [![build](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml/badge.svg)](https://github.com/Florents-Tselai/pgpdf/actions/workflows/build.yml)
 ![GitHub Repo stars](https://img.shields.io/github/stars/Florents-Tselai/pgpdf)
+![Docker Pulls](https://img.shields.io/docker/pulls/florents/pgpdf)
 
 This extension for PostgreSQL provides a `pdf` data type and assorted functions.
 
@@ -260,19 +261,53 @@ SELECT pdf_version('/tmp/pgintro.pdf');
 
 ## Installation
 
+Install [poppler](https://poppler.freedesktop.org) dependencies
+
+**Linux**
 ```
 sudo apt install -y libpoppler-glib-dev pkg-config
 ```
+
+**Homebrew/MacOS**
+
+```
+brew install poppler pkgconf
+```
+
 ```
 cd /tmp
 git clone https://github.com/Florents-Tselai/pgpdf.git
 cd pgpdf
 make
-make install
+make install # may need sudo
 ```
+
+After the installation, in a session:
 
 ```tsql
 CREATE EXTENSION pgpdf;
+```
+
+### Docker
+
+Get the [Docker image](https://hub.docker.com/r/florents/pgpdf) with:
+
+```sh
+docker pull florents/pgpdf:pg17
+```
+
+This adds pgpdf to the [Postgres image](https://hub.docker.com/_/postgres) (replace `17` with your Postgres server version, and run it the same way).
+
+Run the image in a container.
+
+```sh
+docker run --name pgpdf -p 5432:5432 -e POSTGRES_PASSWORD=pass florents/pgpdf:0.1.0-pg17
+```
+
+Through another terminal, connect to the running server (container).
+
+```sh
+PGPASSWORD=pass psql -h localhost -p 5432 -U postgres
 ```
 
 > [!WARNING]

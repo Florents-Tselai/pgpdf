@@ -1,0 +1,7 @@
+/.git/
+/dist/
+/results/
+/tmp_check/
+regression.*
+*.o
+*.so
