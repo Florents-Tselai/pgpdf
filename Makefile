@@ -43,9 +43,9 @@ dist:
 # for Docker
 PG_MAJOR ?= 17
 
-.PHONY: docker
+.PHONY: docker-build
 
-docker:
+docker-build:
 	docker build --pull --no-cache --build-arg PG_MAJOR=$(PG_MAJOR) -t florents/pgpdf:pg$(PG_MAJOR) -t florents/pgpdf:$(EXTVERSION)-pg$(PG_MAJOR) .
 
 .PHONY: docker-release
