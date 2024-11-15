@@ -2,7 +2,7 @@ PG_CONFIG = pg_config
 PKG_CONFIG = pkg-config
 
 EXTENSION = pgpdf
-
+EXTVERSION = 0.1.0
 MODULE_big = $(EXTENSION)
 
 OBJS = pgpdf.o
@@ -33,3 +33,22 @@ PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 
 dev: clean all install installcheck
+
+.PHONY: dist
+
+dist:
+	mkdir -p dist
+	git archive --format zip --prefix=$(EXTENSION)-$(EXTVERSION)/ --output dist/$(EXTENSION)-$(EXTVERSION).zip main
+
+# for Docker
+PG_MAJOR ?= 17
+
+.PHONY: docker
+
+docker:
+	docker build --pull --no-cache --build-arg PG_MAJOR=$(PG_MAJOR) -t florents/pgpdf:pg$(PG_MAJOR) -t florents/pgpdf:$(EXTVERSION)-pg$(PG_MAJOR) .
+
+.PHONY: docker-release
+
+docker-release:
+	docker buildx build --push --pull --no-cache --platform linux/amd64,linux/arm64 --build-arg PG_MAJOR=$(PG_MAJOR) -t florents/pgpdf:pg$(PG_MAJOR) -t florents/pgpdf:$(EXTVERSION)-pg$(PG_MAJOR) .
