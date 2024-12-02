@@ -12,10 +12,14 @@ jobs:
           - postgres: 17
             os: ubuntu-24.04
           - postgres: 16
-            os: ubuntu-24.04
+            os: ubuntu-22.04
           - postgres: 15
             os: ubuntu-22.04
           - postgres: 14
+            os: ubuntu-22.04
+          - postgres: 13
+            os: ubuntu-22.04
+          - postgres: 12
             os: ubuntu-22.04
 
     steps:
