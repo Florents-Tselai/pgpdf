@@ -5,7 +5,7 @@
     "maintainer": [
         "Florents Tselai <florents.tselai@gmail.com>"
     ],
-    "license": "GPL-2.0",
+    "license": "gpl_2",
     "generated_by": "Florents Tselai",
     "release_status": "stable",
     "prereqs": {
