@@ -1,0 +1,44 @@
+{
+    "name": "pgpdf",
+    "abstract": "PDF Type for Postgres",
+    "version": "0.1.0",
+    "maintainer": [
+        "Florents Tselai <florents.tselai@gmail.com>"
+    ],
+    "license": "GPL-2.0",
+    "generated_by": "Florents Tselai",
+    "release_status": "stable",
+    "prereqs": {
+        "runtime": {
+            "requires": {
+                "PostgreSQL": "14.0.0"
+            }
+        }
+    },
+    "provides": {
+        "pgpdf": {
+            "file": "sql/pgpdf--0.1.0.sql",
+            "docfile": "README.md",
+            "version": "0.1.0",
+            "abstract": "PDF Type for Postgres"
+        }
+    },
+    "resources": {
+        "bugtracker": {
+            "web": "https://github.com/Florents-Tselai/pgpdf/issues"
+        },
+        "repository": {
+            "url": "git://github.com/Florents-Tselai/pgpdf.git" ,
+            "web": "https://github.com/Florents-Tselai/pgpdf",
+            "type": "git"
+        }
+    },
+    "meta-spec": {
+      "version": "1.0.0",
+      "url": "http://pgxn.org/meta/spec.txt"
+    },
+    "tags": [
+        "pdf",
+        "documents"
+    ]
+}
