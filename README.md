@@ -66,6 +66,20 @@ The files will be read from the disk only once!
 > That's different than the user running psql.
 > If you don't understand what this means, as your DBA!
 
+### Reading from URLs
+
+You can combine pgpdf with [pgsql-http](https://github.com/pramsey/pgsql-http) 
+to quickly grab remote PDFs into Postgres,
+by fetching the remote content as `bytea` and then treat it as a PDF.
+
+```tsql
+CREATE EXTENSION pgpdf;
+CREATE EXTENSION http;
+
+SELECT pdf_read_bytes(text_to_bytea(content))
+FROM http_get('https://wiki.postgresql.org/images/e/e3/Hooks_in_postgresql.pdf');
+```
+
 ### String Functions and Operators
 
 Standard Postgres [String Functions and Operators](https://www.postgresql.org/docs/17/functions-string.html)
