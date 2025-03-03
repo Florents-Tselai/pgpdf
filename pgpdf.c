@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "tesseract/capi.h"
 
 #if PG_VERSION_NUM >= 160000
 #include <glib.h>
