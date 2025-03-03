@@ -13,6 +13,12 @@ PG_CPPFLAGS = $(shell $(PKG_CONFIG) --cflags poppler poppler-glib)
 PG_LDFLAGS = $(shell $(PKG_CONFIG) --libs poppler poppler-glib)
 SHLIB_LINK =-lpoppler -lpoppler-glib
 
+ifdef WITH_OCR
+PG_CPPFLAGS += $(shell $(PKG_CONFIG) --cflags tesseract)
+PG_LDFLAGS += $(shell $(PKG_CONFIG) --libs tesseract)
+SHLIB_LINK += -ltesseract
+endif
+
 TESTS = $(wildcard test/sql/*.sql)
 REGRESS = $(patsubst test/sql/%.sql,%,$(TESTS))
 REGRESS_OPTS = --inputdir=test --load-extension=$(EXTENSION)
