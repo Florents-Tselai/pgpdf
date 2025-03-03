@@ -25,13 +25,19 @@ jobs:
           sudo apt update
           sudo apt install -y libpoppler-glib-dev pkg-config wget
 
+      - run: |
+          sudo add-apt-repository -y ppa:alex-p/tesseract-ocr-devel
+          sudo apt update
+          sudo apt install tesseract-ocr libtesseract-dev 
+          export PKG_CONFIG_PATH=/usr/lib/pkgconfig:/usr/share/pkgconfig
+
       - uses: ankane/setup-postgres@v1
         with:
           postgres-version: ${{ matrix.postgres }}
           dev-files: true
 
       - run: make
-      - run: sudo make install
+      - run: sudo make install WITH_OCR=1
       - run: make installcheck
       - if: ${{ failure() }}
         run: cat regression.diffs
