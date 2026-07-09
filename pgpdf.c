@@ -35,16 +35,16 @@ typedef struct varlena pdftype;
 #define PG_RETURN_PDF_P(x)	PG_RETURN_POINTER(x)
 
 #define PG_GETARG_POPPLER_DOCUMENT(X) ({ \
-    pdftype* pdf = PG_GETARG_PDF_P(X); \
-    GError* error = NULL; \
-    GBytes* pdf_data = g_bytes_new(VARDATA(pdf), VARSIZE_ANY_EXHDR(pdf)); \
-    PopplerDocument* doc = poppler_document_new_from_bytes(pdf_data, NULL, &error); \
-    g_bytes_unref(pdf_data); \
-    if (!doc) { \
-        elog(ERROR, "Error parsing PDF document: %s", error->message); \
-        g_clear_error(&error); \
+    pdftype* __pgpdf_pdf = PG_GETARG_PDF_P(X); \
+    GError* __pgpdf_error = NULL; \
+    GBytes* __pgpdf_data = g_bytes_new(VARDATA(__pgpdf_pdf), VARSIZE_ANY_EXHDR(__pgpdf_pdf)); \
+    PopplerDocument* __pgpdf_doc = poppler_document_new_from_bytes(__pgpdf_data, NULL, &__pgpdf_error); \
+    g_bytes_unref(__pgpdf_data); \
+    if (!__pgpdf_doc) { \
+        elog(ERROR, "Error parsing PDF document: %s", __pgpdf_error->message); \
+        g_clear_error(&__pgpdf_error); \
     } \
-    doc; \
+    __pgpdf_doc; \
 })
 
 PG_FUNCTION_INFO_V1(pdf_in);
@@ -53,7 +53,8 @@ Datum
 pdf_in(PG_FUNCTION_ARGS)
 {
     Datum filename_t = CStringGetTextDatum(PG_GETARG_CSTRING(0));
-    Datum pdf_bytes;
+    Datum pdf_bytes_datum;
+    bytea *pdf_bytes;
     int32 pdf_bytes_len;
 
     pdftype* result;
@@ -61,7 +62,8 @@ pdf_in(PG_FUNCTION_ARGS)
     PopplerDocument* doc = NULL;
     GError* error = NULL;
 
-    pdf_bytes = DirectFunctionCall1(pg_read_binary_file_all, filename_t);
+    pdf_bytes_datum = DirectFunctionCall1(pg_read_binary_file_all, filename_t);
+    pdf_bytes = (bytea *) DatumGetPointer(pdf_bytes_datum);
     pdf_bytes_len = VARSIZE_ANY_EXHDR(pdf_bytes);
 
     result = (pdftype*)palloc(VARHDRSZ + pdf_bytes_len);
@@ -99,13 +101,15 @@ pdf_out(PG_FUNCTION_ARGS)
     for (int i = 0; i < num_pages; i++)
     {
         PopplerPage* page = poppler_document_get_page(doc, i);
+        gchar* page_text;
+
         if (!page)
         {
             elog(WARNING, "Failed to get page %d\n", i);
             continue;
         }
 
-        gchar* page_text = poppler_page_get_text(page);
+        page_text = poppler_page_get_text(page);
         if (page_text)
         {
             appendStringInfo(strinfo, "%s", page_text);
@@ -241,21 +245,25 @@ Datum
 pdf_creation(PG_FUNCTION_ARGS)
 {
     PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
-    GDateTime *dt = poppler_document_get_creation_date_time(doc);
+    GDateTime *dt;
+    gint year, month, day, hour, minute, second;
+    TimestampTz ts;
+
+    dt = poppler_document_get_creation_date_time(doc);
 
     if (dt == NULL)
         PG_RETURN_NULL();
 
-    gint year = g_date_time_get_year(dt);
-    gint month = g_date_time_get_month(dt);
-    gint day = g_date_time_get_day_of_month(dt);
-    gint hour = g_date_time_get_hour(dt);
-    gint minute = g_date_time_get_minute(dt);
-    gint second = g_date_time_get_second(dt);
+    year = g_date_time_get_year(dt);
+    month = g_date_time_get_month(dt);
+    day = g_date_time_get_day_of_month(dt);
+    hour = g_date_time_get_hour(dt);
+    minute = g_date_time_get_minute(dt);
+    second = g_date_time_get_second(dt);
 
     g_date_time_unref(dt);
 
-    TimestampTz ts = DatumGetTimestamp(DirectFunctionCall6(
+    ts = DatumGetTimestamp(DirectFunctionCall6(
         make_timestamp,
         Int32GetDatum(year),
         Int32GetDatum(month),
@@ -274,21 +282,25 @@ Datum
 pdf_modification(PG_FUNCTION_ARGS)
 {
     PopplerDocument *doc = PG_GETARG_POPPLER_DOCUMENT(0);
-    GDateTime *dt = poppler_document_get_modification_date_time(doc);
+    GDateTime *dt;
+    gint year, month, day, hour, minute, second;
+    TimestampTz ts;
+
+    dt = poppler_document_get_modification_date_time(doc);
 
     if (dt == NULL)
         PG_RETURN_NULL();
 
-    gint year = g_date_time_get_year(dt);
-    gint month = g_date_time_get_month(dt);
-    gint day = g_date_time_get_day_of_month(dt);
-    gint hour = g_date_time_get_hour(dt);
-    gint minute = g_date_time_get_minute(dt);
-    gint second = g_date_time_get_second(dt);
+    year = g_date_time_get_year(dt);
+    month = g_date_time_get_month(dt);
+    day = g_date_time_get_day_of_month(dt);
+    hour = g_date_time_get_hour(dt);
+    minute = g_date_time_get_minute(dt);
+    second = g_date_time_get_second(dt);
 
     g_date_time_unref(dt);
 
-    TimestampTz ts = DatumGetTimestamp(DirectFunctionCall6(
+    ts = DatumGetTimestamp(DirectFunctionCall6(
         make_timestamp,
         Int32GetDatum(year),
         Int32GetDatum(month),
